@@ -1,21 +1,23 @@
 <template>
   <div id="wrapper">
-    <img id="logo" src="~@/assets/logo.png" alt="electron-vue">
+    <img id="logo" src="~@/assets/logo.png" alt="eyantra">
     <main>
       <div class="left-side">
         <span class="title">
           Welcome to score page!
         </span>
-        <system-information></system-information>
+        <router-link to="/" >Go back</router-link>
       </div>
 
       <div class="right-side">
         <div class="doc">
-          <div class="title">Testing</div>
+          <div class="title">Team - {{teamId}}</div>
           <p>
-            Ahoy hoy!!
+           <button class="button is-rounded is-success" @click="start">Start</button>
+           <button class="button is-rounded is-danger" @click="pause">Pause</button>
+           
           </p>
-
+          <div class="title">{{timer}}</div>
         </div>
 
       </div>
@@ -24,14 +26,32 @@
 </template>
 
 <script>
+  // import { mapActions } from 'vuex';
   import SystemInformation from './LandingPage/SystemInformation';
 
   export default {
-    name: 'landing-page',
+    name: 'score-page',
+    data: () => ({
+      started: false,
+    }),
     components: { SystemInformation },
     methods: {
-      open(link) {
-        this.$electron.shell.openExternal(link);
+      start() {
+        if (!this.started) {
+          this.started = true;
+          setInterval(() => this.$store.dispatch('Counter/startTimer'), 1000);
+        }
+      },
+      pause() {
+        this.$store.dispatch('Counter/pauseTimer');
+      },
+    },
+    computed: {
+      timer() {
+        return this.$store.state.Counter.timer;
+      },
+      teamId() {
+        return this.$store.state.Counter.teamId;
       },
     },
   };
@@ -63,7 +83,7 @@
   #logo {
     height: auto;
     margin-bottom: 20px;
-    width: 420px;
+    width: 150px;
   }
 
   main {
@@ -96,27 +116,4 @@
     margin-bottom: 10px;
   }
 
-  .doc p {
-    color: black;
-    margin-bottom: 10px;
-  }
-
-  .doc button {
-    font-size: .8em;
-    cursor: pointer;
-    outline: none;
-    padding: 0.75em 2em;
-    border-radius: 2em;
-    display: inline-block;
-    color: #fff;
-    background-color: #4fc08d;
-    transition: all 0.15s ease;
-    box-sizing: border-box;
-    border: 1px solid #4fc08d;
-  }
-
-  .doc button.alt {
-    color: #42b983;
-    background-color: transparent;
-  }
 </style>

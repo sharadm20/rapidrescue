@@ -11,9 +11,9 @@ export default new Router({
       component: require('@/components/LandingPage').default,
     },
     {
-        path:'/score/:teamId',
-        name: 'score-page',
-        component: require('@/components/ScorePage').default,
+      path: '/score',
+      name: 'score-page',
+      component: require('@/components/ScorePage').default,
 
     },
     {
