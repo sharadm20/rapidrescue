@@ -4,24 +4,25 @@
     <main>
       <div class="left-side">
         <span class="title">
-          Welcome to your new project!
+          Welcome to Rapid Rescue GUI!
         </span>
-        
       </div>
-
       <div class="right-side">
         <div class="doc">
-          <div class="title">Getting Started</div>
-          <b-field label="Team Id">
+          <div class="title">Team Information</div>
+          <b-field label="Team Id" :type="error ? 'is-danger' : ''"
+            :message="error ? error : ''">
             <b-input v-model="teamId"></b-input>
           </b-field>
            <button class="button" @click="startScore">Go to Score</button><br><br>
         </div>
-        <div class="doc">
-        
+        <div class="doc">          
         </div>
       </div>
     </main>
+    <footer>
+      <img id="footer" src="~@/assets/Illustration.png" alt="electron-vue">
+    </footer>
   </div>
 </template>
 
@@ -30,17 +31,21 @@
 
   export default {
     data: () => ({
-      teamId: '',
+      teamId: null,
+      error: null,
     }),
     name: 'landing-page',
     components: { SystemInformation },
     created() {
-      this.teamId = '';
+      this.teamId = null;
+      this.error = null;
     },
     methods: {
       startScore() {
-        if (this.teamId != null) {
+        if (this.teamId !== null && this.teamId !== '') {
           this.$store.dispatch('Counter/setTeamId', this.teamId);
+        } else {
+          this.error = 'Please input team id';
         }
       },
     },
@@ -74,6 +79,10 @@
     height: auto;
     margin-bottom: 20px;
     width: 420px;
+  }
+  #footer {
+    position: sticky;
+    top: 0px;
   }
 
   main {
